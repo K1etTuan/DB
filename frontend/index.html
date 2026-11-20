@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7fb" />
+    <meta
+      name="description"
+      content="Giao diện quản trị sàn thương mại điện tử ShopeeDB"
+    />
+    <title>ShopeeDB — Quản trị sàn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="ShopeeDB trang chủ">
+          <span class="brand-mark">s</span>
+          <span class="brand-copy">
+            <strong>shopee<span>db</span></strong>
+            <small>SELLER CENTER</small>
+          </span>
+        </a>
+
+        <div class="workspace-switcher">
+          <span class="workspace-avatar">T</span>
+          <span class="workspace-copy">
+            <strong>Tech House</strong>
+            <small>Cửa hàng của bạn</small>
+          </span>
+          <span class="switcher-chevron">⌄</span>
+        </div>
+
+        <p class="nav-caption">MENU CHÍNH</p>
+        <nav class="main-nav" aria-label="Điều hướng chính">
+          <button class="nav-item" data-page="overview">
+            <span class="nav-icon">⌂</span><span>Tổng quan</span>
+          </button>
+          <button class="nav-item active" data-page="products">
+            <span class="nav-icon">▦</span><span>Sản phẩm</span>
+            <span class="nav-count" id="product-nav-count">06</span>
+          </button>
+          <button class="nav-item" data-page="reports">
+            <span class="nav-icon">▥</span><span>Báo cáo</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <div class="note-icon">✦</div>
+          <strong>Giao diện bản mẫu</strong>
+          <p>Dữ liệu đang lưu trên trình duyệt. Chưa kết nối máy chủ.</p>
+          <span class="mock-badge"><i></i> MOCK DATA</span>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="user-avatar">AL</div>
+          <div class="user-copy">
+            <strong>Anh Linh</strong>
+            <small>Quản trị viên</small>
+          </div>
+          <button class="icon-button quiet" aria-label="Tùy chọn tài khoản">···</button>
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Quản lý cửa hàng</span><b>/</b><strong id="page-breadcrumb">Sản phẩm</strong></div>
+          <div class="topbar-actions">
+            <span class="connection-status"><i></i> Chế độ bản mẫu</span>
+            <button class="icon-button notification-button" aria-label="Thông báo">
+              ♧<span class="notification-dot"></span>
+            </button>
+            <div class="top-avatar">AL</div>
+          </div>
+        </header>
+
+        <section class="page active" id="page-products">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">QUẢN LÝ CỬA HÀNG</p>
+              <h1>Sản phẩm</h1>
+              <p class="page-description">Quản lý danh sách sản phẩm và tình trạng tồn kho của cửa hàng.</p>
+            </div>
+            <button class="button button-primary" id="add-product-button">
+              <span class="button-plus">＋</span> Thêm sản phẩm
+            </button>
+          </div>
+
+          <section class="stats-grid" aria-label="Tổng quan sản phẩm">
+            <article class="stat-card">
+              <div class="stat-top"><span>Tổng sản phẩm</span><span class="stat-icon purple">▦</span></div>
+              <div class="stat-value" id="stat-products">—</div>
+              <div class="stat-foot"><span class="stat-muted">Trong cửa hàng</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Đang bán</span><span class="stat-icon green">↗</span></div>
+              <div class="stat-value" id="stat-active">—</div>
+              <div class="stat-foot"><span class="positive">●</span><span class="stat-muted">Sẵn sàng hiển thị</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Sắp hết hàng</span><span class="stat-icon orange">◷</span></div>
+              <div class="stat-value" id="stat-low-stock">—</div>
+              <div class="stat-foot"><span class="stat-muted">Tồn kho dưới 10</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Giá trị tồn kho</span><span class="stat-icon blue">₫</span></div>
+              <div class="stat-value stat-money" id="stat-stock-value">—</div>
+              <div class="stat-foot"><span class="stat-muted">Ước tính theo giá bán</span></div>
+            </article>
+          </section>
+
+          <section class="content-card">
+            <div class="card-heading product-card-heading">
+              <div>
+                <h2>Danh sách sản phẩm <span class="subtle-count" id="product-count-label"></span></h2>
+                <p>Tra cứu, cập nhật hoặc quản lý sản phẩm của bạn.</p>
+              </div>
+              <div class="table-tools">
+                <label class="search-box">
+                  <span aria-hidden="true">⌕</span>
+                  <input id="product-search" type="search" placeholder="Tìm tên hoặc mã sản phẩm..." />
+                  <kbd>⌘ K</kbd>
+                </label>
+                <select id="status-filter" aria-label="Lọc theo trạng thái">
+                  <option value="all">Tất cả trạng thái</option>
+                  <option value="Đang bán">Đang bán</option>
+                  <option value="Tạm ẩn">Tạm ẩn</option>
+                </select>
+                <button class="icon-button tool-button" id="refresh-products" aria-label="Làm mới danh sách" title="Làm mới">↻</button>
+              </div>
+            </div>
+
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="check-cell"><input type="checkbox" aria-label="Chọn tất cả" disabled /></th>
+                    <th>SẢN PHẨM</th>
+                    <th>PHÂN LOẠI</th>
+                    <th>GIÁ BÁN</th>
+                    <th>TỒN KHO</th>
+                    <th>TRẠNG THÁI</th>
+                    <th><span class="sr-only">Thao tác</span></th>
+                  </tr>
+                </thead>
+                <tbody id="products-table-body"></tbody>
+              </table>
+              <div class="empty-state hidden" id="products-empty">
+                <div class="empty-icon">⌕</div>
+                <strong>Không tìm thấy sản phẩm</strong>
+                <p>Thử thay đổi từ khóa hoặc bộ lọc trạng thái.</p>
+              </div>
+            </div>
+            <div class="table-footer">
+              <span id="table-range">Đang hiển thị —</span>
+              <div class="pagination">
+                <button class="page-arrow" disabled aria-label="Trang trước">‹</button>
+                <button class="page-number current">1</button>
+                <button class="page-arrow" disabled aria-label="Trang sau">›</button>
+              </div>
+            </div>
+          </section>
+          <p class="mock-disclaimer"><span>ⓘ</span> Đây là giao diện bản mẫu. Thao tác hiện chỉ cập nhật dữ liệu trên trình duyệt, chưa ghi vào CSDL.</p>
+        </section>
+
+        <section class="page" id="page-overview">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">XIN CHÀO, ANH LINH 👋</p>
+              <h1>Tổng quan</h1>
+              <p class="page-description">Tình hình hoạt động cửa hàng trong hôm nay.</p>
+            </div>
+            <button class="button button-secondary" data-go="reports">Xem báo cáo <span>→</span></button>
+          </div>
+          <section class="stats-grid" aria-label="Tổng quan kinh doanh">
+            <article class="stat-card">
+              <div class="stat-top"><span>Doanh thu hôm nay</span><span class="stat-icon purple">₫</span></div>
+              <div class="stat-value stat-money">12.480.000 ₫</div>
+              <div class="stat-foot"><span class="positive">↗ 12,8%</span><span class="stat-muted">so với hôm qua</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Đơn hàng mới</span><span class="stat-icon orange">▤</span></div>
+              <div class="stat-value">28</div>
+              <div class="stat-foot"><span class="positive">↗ 8,2%</span><span class="stat-muted">so với hôm qua</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Sản phẩm</span><span class="stat-icon blue">▦</span></div>
+              <div class="stat-value" id="overview-product-count">—</div>
+              <div class="stat-foot"><span class="stat-muted">Đang được quản lý</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Đánh giá trung bình</span><span class="stat-icon green">☆</span></div>
+              <div class="stat-value">4,8 <small class="rating-stars">★★★★★</small></div>
+              <div class="stat-foot"><span class="stat-muted">Từ 326 đánh giá</span></div>
+            </article>
+          </section>
+          <div class="overview-grid">
+            <section class="content-card revenue-card">
+              <div class="card-heading">
+                <div><h2>Doanh thu</h2><p>Thống kê trong 7 ngày gần nhất</p></div>
+                <button class="select-button" data-go="reports">7 ngày qua⌄</button>
+              </div>
+              <div class="revenue-total">38.640.000 ₫ <span class="positive">↗ 8,4%</span></div>
+              <div class="chart-area">
+                <div class="chart-y-labels"><span>12tr</span><span>8tr</span><span>4tr</span><span>0</span></div>
+                <div class="bar-chart" aria-label="Biểu đồ doanh thu 7 ngày">
+                  <div class="chart-gridline one"></div><div class="chart-gridline two"></div><div class="chart-gridline three"></div>
+                  <div class="bar-column"><div class="bar" style="height:46%"></div><span>T2</span></div>
+                  <div class="bar-column"><div class="bar" style="height:65%"></div><span>T3</span></div>
+                  <div class="bar-column"><div class="bar" style="height:53%"></div><span>T4</span></div>
+                  <div class="bar-column"><div class="bar" style="height:80%"></div><span>T5</span></div>
+                  <div class="bar-column"><div class="bar" style="height:66%"></div><span>T6</span></div>
+                  <div class="bar-column"><div class="bar highlight" style="height:94%"></div><span>T7</span></div>
+                  <div class="bar-column"><div class="bar" style="height:73%"></div><span>CN</span></div>
+                </div>
+              </div>
+            </section>
+            <section class="content-card quick-actions-card">
+              <div class="card-heading"><div><h2>Thao tác nhanh</h2><p>Các chức năng thường dùng</p></div></div>
+              <button class="quick-action" id="quick-add-product"><span class="quick-icon purple">＋</span><span><strong>Thêm sản phẩm mới</strong><small>Đăng bán sản phẩm trong cửa hàng</small></span><b>→</b></button>
+              <button class="quick-action" data-go="products"><span class="quick-icon blue">▦</span><span><strong>Quản lý sản phẩm</strong><small>Cập nhật giá và tồn kho</small></span><b>→</b></button>
+              <button class="quick-action" data-go="reports"><span class="quick-icon green">▥</span><span><strong>Xem báo cáo</strong><small>Theo dõi doanh thu, sản lượng</small></span><b>→</b></button>
+            </section>
+          </div>
+          <p class="mock-disclaimer"><span>ⓘ</span> Số liệu tổng quan chỉ mang tính minh họa, chưa lấy từ CSDL.</p>
+        </section>
+
+        <section class="page" id="page-reports">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">PHÂN TÍCH KINH DOANH</p>
+              <h1>Báo cáo</h1>
+              <p class="page-description">Theo dõi kết quả kinh doanh theo thời gian và danh mục.</p>
+            </div>
+            <button class="button button-secondary" id="export-report">↓ Tải CSV</button>
+          </div>
+          <section class="report-filter content-card">
+            <div class="filter-field">
+              <label for="report-period">Thời gian</label>
+              <select id="report-period">
+                <option value="7">7 ngày gần nhất</option>
+                <option value="30">30 ngày gần nhất</option>
+                <option value="all">Toàn thời gian</option>
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="report-store">Cửa hàng</label>
+              <select id="report-store">
+                <option value="all">Tất cả cửa hàng</option>
+                <option value="Tech House">Tech House</option>
+                <option value="Nhà Xinh">Nhà Xinh</option>
+                <option value="Mây Studio">Mây Studio</option>
+              </select>
+            </div>
+            <button class="button button-primary filter-apply" id="apply-report">Xem báo cáo <span>→</span></button>
+          </section>
+          <section class="stats-grid report-stats">
+            <article class="stat-card"><div class="stat-top"><span>Doanh thu thuần</span><span class="stat-icon purple">₫</span></div><div class="stat-value stat-money" id="report-revenue">—</div><div class="stat-foot"><span class="stat-muted">Đơn hoàn thành</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Đơn hàng</span><span class="stat-icon blue">▤</span></div><div class="stat-value" id="report-orders">—</div><div class="stat-foot"><span class="stat-muted">Trong kỳ đã chọn</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Giá trị trung bình</span><span class="stat-icon green">↗</span></div><div class="stat-value stat-money" id="report-average">—</div><div class="stat-foot"><span class="stat-muted">Doanh thu / đơn</span></div></article>
+          </section>
+          <section class="content-card report-table-card">
+            <div class="card-heading">
+              <div><h2>Doanh thu theo danh mục</h2><p>Sắp xếp theo doanh thu giảm dần</p></div>
+              <span class="report-date-label" id="report-date-label">7 ngày gần nhất</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>DANH MỤC</th><th>SỐ ĐƠN</th><th>SẢN PHẨM ĐÃ BÁN</th><th>DOANH THU</th><th>TỶ TRỌNG</th></tr></thead>
+                <tbody id="report-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+          <p class="mock-disclaimer"><span>ⓘ</span> Báo cáo đang dùng dữ liệu mẫu. Khi backend sẵn sàng, bộ lọc sẽ truyền tham số tới stored procedure.</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="product-modal-backdrop">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <div><p class="eyebrow">QUẢN LÝ SẢN PHẨM</p><h2 id="modal-title">Thêm sản phẩm</h2></div>
+          <button class="icon-button modal-close" id="close-product-modal" aria-label="Đóng">×</button>
+        </div>
+        <form id="product-form">
+          <input type="hidden" id="product-id" />
+          <label class="form-field"><span>Tên sản phẩm <b>*</b></span><input id="product-name" maxlength="100" required placeholder="Ví dụ: Tai nghe Bluetooth" /></label>
+          <div class="form-row">
+            <label class="form-field"><span>Danh mục <b>*</b></span><select id="product-category" required><option value="">Chọn danh mục</option><option>Điện tử</option><option>Thời trang</option><option>Gia dụng</option><option>Phụ kiện</option><option>Khác</option></select></label>
+            <label class="form-field"><span>Cửa hàng <b>*</b></span><select id="product-store" required><option value="">Chọn cửa hàng</option><option>Tech House</option><option>Nhà Xinh</option><option>Mây Studio</option></select></label>
+          </div>
+          <div class="form-row">
+            <label class="form-field"><span>Giá bán (₫) <b>*</b></span><input id="product-price" type="number" min="0" step="1000" required placeholder="0" /></label>
+            <label class="form-field"><span>Tồn kho <b>*</b></span><input id="product-stock" type="number" min="0" step="1" required placeholder="0" /></label>
+          </div>
+          <label class="form-field"><span>Số phân loại</span><input id="product-variants" type="number" min="1" step="1" value="1" required /></label>
+          <div class="form-error hidden" id="form-error" role="alert"></div>
+          <div class="modal-footer">
+            <button type="button" class="button button-secondary" id="cancel-product-modal">Hủy</button>
+            <button type="submit" class="button button-primary" id="save-product-button">Lưu sản phẩm</button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="toast hidden" id="toast" role="status"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
