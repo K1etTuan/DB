@@ -434,6 +434,12 @@ CREATE TABLE SHOP_ORDER (
     total_item_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
     shipping_fee DECIMAL(12,2) NOT NULL DEFAULT 0,
     discount_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    
+    -- Thuoc tinh dan xuat: tong tien thanh toan
+	total_payment_amount DECIMAL(12,2)
+    GENERATED ALWAYS AS (
+        total_item_amount + shipping_fee - discount_amount
+    ) STORED,
 
     order_recipient_name VARCHAR(100) NOT NULL,
     order_phone VARCHAR(15) NOT NULL,
