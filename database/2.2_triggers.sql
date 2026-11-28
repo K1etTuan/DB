@@ -11,7 +11,7 @@ DROP TRIGGER IF EXISTS trg_order_line_after_delete;
 DROP TRIGGER IF EXISTS trg_shop_order_after_update;
 
 DELIMITER $$
-=
+
 -- NHOM A: TRIGGER KIEM TRA RANG BUOC NGU NGHIA / NGHIEP VU (BEFORE)
 -- (Bo sung day du va khong trung lap voi 1.1Semantic_constraints_trigger.sql)
 
