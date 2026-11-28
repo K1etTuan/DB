@@ -118,34 +118,46 @@
           <section class="content-card">
             <div class="card-heading product-card-heading">
               <div>
-                <h2>Danh sách sản phẩm <span class="subtle-count" id="product-count-label"></span></h2>
-                <p>Tra cứu, cập nhật hoặc quản lý sản phẩm của bạn.</p>
+                <h2>Sản phẩm &amp; phân loại <span class="subtle-count" id="product-count-label"></span></h2>
+                <p>Mỗi dòng là một phân loại, khớp kết quả thủ tục tìm kiếm.</p>
               </div>
               <div class="table-tools">
                 <label class="search-box">
                   <span aria-hidden="true">⌕</span>
-                  <input id="product-search" type="search" placeholder="Tìm tên hoặc mã sản phẩm..." />
+                  <input id="product-search" type="search" placeholder="Tên sản phẩm hoặc SKU..." />
                   <kbd>⌘ K</kbd>
                 </label>
+                <select id="category-filter" aria-label="Lọc theo danh mục">
+                  <option value="">Tất cả danh mục</option>
+                </select>
+                <select id="store-filter" aria-label="Lọc theo cửa hàng">
+                  <option value="">Tất cả cửa hàng</option>
+                </select>
                 <select id="status-filter" aria-label="Lọc theo trạng thái">
-                  <option value="all">Tất cả trạng thái</option>
-                  <option value="Đang bán">Đang bán</option>
-                  <option value="Tạm ẩn">Tạm ẩn</option>
+                  <option value="">Tất cả trạng thái</option>
+                  <option value="Active">Đang bán</option>
+                  <option value="Inactive">Tạm ẩn</option>
                 </select>
                 <button class="icon-button tool-button" id="refresh-products" aria-label="Làm mới danh sách" title="Làm mới">↻</button>
               </div>
+            </div>
+
+            <div class="advanced-filters">
+              <label>Giá từ <input id="min-price-filter" type="number" min="0" placeholder="0 ₫" /></label>
+              <label>Đến <input id="max-price-filter" type="number" min="0" placeholder="Không giới hạn" /></label>
+              <button class="text-button" id="clear-product-filters">Xóa bộ lọc</button>
             </div>
 
             <div class="table-scroll">
               <table>
                 <thead>
                   <tr>
-                    <th class="check-cell"><input type="checkbox" aria-label="Chọn tất cả" disabled /></th>
                     <th>SẢN PHẨM</th>
-                    <th>PHÂN LOẠI</th>
+                    <th>CỬA HÀNG</th>
+                    <th>SKU / PHÂN LOẠI</th>
                     <th>GIÁ BÁN</th>
                     <th>TỒN KHO</th>
-                    <th>TRẠNG THÁI</th>
+                    <th>TRẠNG THÁI SP</th>
                     <th><span class="sr-only">Thao tác</span></th>
                   </tr>
                 </thead>
@@ -166,7 +178,19 @@
               </div>
             </div>
           </section>
-          <p class="mock-disclaimer"><span>ⓘ</span> Đây là giao diện bản mẫu. Thao tác hiện chỉ cập nhật dữ liệu trên trình duyệt, chưa ghi vào CSDL.</p>
+          <section class="content-card restock-card">
+            <div class="restock-copy">
+              <span class="quick-icon orange">↗</span>
+              <div><h2>Gợi ý nhập thêm hàng</h2><p>Mô phỏng <code>fn_suggest_restock(variant_id, days)</code>.</p></div>
+            </div>
+            <div class="restock-controls">
+              <label class="filter-field"><span>Phân loại</span><select id="restock-variant" aria-label="Chọn phân loại sản phẩm"></select></label>
+              <label class="filter-field"><span>Số ngày dự trữ</span><input id="restock-days" type="number" min="1" value="14" /></label>
+              <button class="button button-secondary" id="calculate-restock">Tính gợi ý</button>
+              <strong class="restock-result hidden" id="restock-result" role="status"></strong>
+            </div>
+          </section>
+          <p class="mock-disclaimer"><span>ⓘ</span> CRUD và hàm đang dùng dữ liệu mẫu trên trình duyệt; chưa kết nối backend/MySQL.</p>
         </section>
 
         <section class="page" id="page-overview">
@@ -236,27 +260,30 @@
             <div>
               <p class="eyebrow">PHÂN TÍCH KINH DOANH</p>
               <h1>Báo cáo</h1>
-              <p class="page-description">Theo dõi kết quả kinh doanh theo thời gian và danh mục.</p>
+              <p class="page-description">Thống kê doanh thu theo cửa hàng trong khoảng ngày đã chọn.</p>
             </div>
             <button class="button button-secondary" id="export-report">↓ Tải CSV</button>
           </div>
           <section class="report-filter content-card">
             <div class="filter-field">
-              <label for="report-period">Thời gian</label>
-              <select id="report-period">
-                <option value="7">7 ngày gần nhất</option>
-                <option value="30">30 ngày gần nhất</option>
-                <option value="all">Toàn thời gian</option>
+              <label for="report-from-date">Từ ngày <b>*</b></label>
+              <input id="report-from-date" type="date" required />
+            </div>
+            <div class="filter-field">
+              <label for="report-to-date">Đến ngày <b>*</b></label>
+              <input id="report-to-date" type="date" required />
+            </div>
+            <div class="filter-field">
+              <label for="report-seller-type">Loại người bán</label>
+              <select id="report-seller-type">
+                <option value="">Tất cả</option>
+                <option value="Individual">Cá nhân</option>
+                <option value="Business">Doanh nghiệp</option>
               </select>
             </div>
             <div class="filter-field">
-              <label for="report-store">Cửa hàng</label>
-              <select id="report-store">
-                <option value="all">Tất cả cửa hàng</option>
-                <option value="Tech House">Tech House</option>
-                <option value="Nhà Xinh">Nhà Xinh</option>
-                <option value="Mây Studio">Mây Studio</option>
-              </select>
+              <label for="report-min-revenue">Doanh thu tối thiểu</label>
+              <input id="report-min-revenue" type="number" min="0" value="0" />
             </div>
             <button class="button button-primary filter-apply" id="apply-report">Xem báo cáo <span>→</span></button>
           </section>
@@ -267,17 +294,17 @@
           </section>
           <section class="content-card report-table-card">
             <div class="card-heading">
-              <div><h2>Doanh thu theo danh mục</h2><p>Sắp xếp theo doanh thu giảm dần</p></div>
-              <span class="report-date-label" id="report-date-label">7 ngày gần nhất</span>
+              <div><h2>Doanh thu theo cửa hàng</h2><p>Chỉ tính đơn đã giao; sắp xếp theo doanh thu giảm dần.</p></div>
+              <span class="report-date-label" id="report-date-label">—</span>
             </div>
             <div class="table-scroll">
               <table>
-                <thead><tr><th>DANH MỤC</th><th>SỐ ĐƠN</th><th>SẢN PHẨM ĐÃ BÁN</th><th>DOANH THU</th><th>TỶ TRỌNG</th></tr></thead>
+                <thead><tr><th>CỬA HÀNG</th><th>LOẠI NGƯỜI BÁN</th><th>SỐ ĐƠN</th><th>SẢN PHẨM ĐÃ BÁN</th><th>DOANH THU</th><th>TB / ĐƠN</th></tr></thead>
                 <tbody id="report-table-body"></tbody>
               </table>
             </div>
           </section>
-          <p class="mock-disclaimer"><span>ⓘ</span> Báo cáo đang dùng dữ liệu mẫu. Khi backend sẵn sàng, bộ lọc sẽ truyền tham số tới stored procedure.</p>
+          <p class="mock-disclaimer"><span>ⓘ</span> Bộ lọc khớp tham số procedure; kết quả hiện là dữ liệu mẫu cho tới khi nhóm có backend.</p>
         </section>
       </main>
     </div>
@@ -285,21 +312,29 @@
     <div class="modal-backdrop hidden" id="product-modal-backdrop">
       <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-header">
-          <div><p class="eyebrow">QUẢN LÝ SẢN PHẨM</p><h2 id="modal-title">Thêm sản phẩm</h2></div>
+          <div><p class="eyebrow">QUẢN LÝ SẢN PHẨM / PHÂN LOẠI</p><h2 id="modal-title">Thêm sản phẩm</h2></div>
           <button class="icon-button modal-close" id="close-product-modal" aria-label="Đóng">×</button>
         </div>
         <form id="product-form">
           <input type="hidden" id="product-id" />
+          <input type="hidden" id="variant-id" />
           <label class="form-field"><span>Tên sản phẩm <b>*</b></span><input id="product-name" maxlength="100" required placeholder="Ví dụ: Tai nghe Bluetooth" /></label>
           <div class="form-row">
-            <label class="form-field"><span>Danh mục <b>*</b></span><select id="product-category" required><option value="">Chọn danh mục</option><option>Điện tử</option><option>Thời trang</option><option>Gia dụng</option><option>Phụ kiện</option><option>Khác</option></select></label>
-            <label class="form-field"><span>Cửa hàng <b>*</b></span><select id="product-store" required><option value="">Chọn cửa hàng</option><option>Tech House</option><option>Nhà Xinh</option><option>Mây Studio</option></select></label>
+            <label class="form-field"><span>Danh mục <b>*</b></span><select id="product-category" required><option value="">Chọn danh mục</option></select></label>
+            <label class="form-field"><span>Cửa hàng <b>*</b></span><select id="product-store" required><option value="">Chọn cửa hàng</option></select></label>
+          </div>
+          <div class="form-row">
+            <label class="form-field"><span>Mã SKU <b>*</b></span><input id="product-sku" maxlength="50" required placeholder="SKU-001" /></label>
+            <label class="form-field"><span>Màu sắc / kích thước</span><input id="product-variant-name" maxlength="100" placeholder="Ví dụ: Đen / M" /></label>
           </div>
           <div class="form-row">
             <label class="form-field"><span>Giá bán (₫) <b>*</b></span><input id="product-price" type="number" min="0" step="1000" required placeholder="0" /></label>
             <label class="form-field"><span>Tồn kho <b>*</b></span><input id="product-stock" type="number" min="0" step="1" required placeholder="0" /></label>
           </div>
-          <label class="form-field"><span>Số phân loại</span><input id="product-variants" type="number" min="1" step="1" value="1" required /></label>
+          <div class="form-row">
+            <label class="form-field"><span>Trạng thái sản phẩm</span><select id="product-status"><option value="Active">Đang bán</option><option value="Inactive">Tạm ẩn</option></select></label>
+            <label class="form-field"><span>Trạng thái phân loại</span><select id="variant-status"><option value="Active">Đang bán</option><option value="Inactive">Tạm ẩn</option></select></label>
+          </div>
           <div class="form-error hidden" id="form-error" role="alert"></div>
           <div class="modal-footer">
             <button type="button" class="button button-secondary" id="cancel-product-modal">Hủy</button>
